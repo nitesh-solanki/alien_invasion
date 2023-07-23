@@ -20,6 +20,7 @@ class AlienInvasion:
 
         self.clock = pygame.time.Clock()
         self.settings = Settings()
+        self.game_play_music_loop(self.settings.initial_music_file_path)
 
         self.screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
         self.settings.screen_width = self.screen.get_rect().width 
@@ -75,10 +76,11 @@ class AlienInvasion:
         if button_clicked and not self.game_active:
             # Reset the game statistics
             self.settings.initialize_dynamic_settings()
+            pygame.mixer.music.unload()
+            self.game_play_music(self.settings.game_music_file_path)
+
             self.stats.reset_stats()
-            self.sb.prep_score()
-            self.sb.prep_level()
-            self.sb.prep_ships()
+            self.sb.prep_images()
             self.game_active = True
 
             # Get rid of any remaining bullets and aliens
@@ -92,6 +94,18 @@ class AlienInvasion:
             # Hide the mouse cursor
             pygame.mouse.set_visible(False)
 
+    def game_play_music(self, file_path):
+        pygame.mixer.init()
+        pygame.mixer.music.load(file_path)
+        pygame.mixer.music.play()
+        # pygame.mixer.music.play(loops=-1)
+
+    def game_play_music_loop(self, file_path):
+        pygame.mixer.init()
+        pygame.mixer.music.load(file_path)
+        pygame.mixer.music.play()
+        pygame.mixer.music.play(loops=-1)
+
     def _check_keydown_events(self, event):
         """Respond to keypresses."""
         if event.key == pygame.K_RIGHT:
@@ -101,6 +115,7 @@ class AlienInvasion:
         elif event.key == pygame.K_q:
             sys.exit()
         elif event.key == pygame.K_SPACE:
+            self.game_play_music(self.settings.bullet_music_file_path)
             self.fire_bullet()
 
     def _check_keyup_events(self, event):
@@ -136,6 +151,7 @@ class AlienInvasion:
 
         if collisions:
             for aliens in collisions.values():
+                self.game_play_music(self.settings.alien_blast_music_file_path)
                 self.stats.score += self.settings.alien_points * len(aliens)
             self.sb.prep_score()
             self.sb.check_high_score()
@@ -146,8 +162,7 @@ class AlienInvasion:
 
     def _start_new_level(self):
         # Destroy existing bullets and create new fleet.
-        self.bullets.empty()
-        self._create_fleet()
+        self._empty_bullet_create_fleet()
         self.settings.increase_speed()
 
         # Increase level
@@ -162,18 +177,25 @@ class AlienInvasion:
             self.sb.prep_ships()
 
             # Get rid of any remaining bullets and aliens.
-            self.bullets.empty()
-            self.aliens.empty()
+            # self.bullets.empty()
+            # self.aliens.empty()
 
+            self._empty_bullet_create_fleet()
             # Create a new fleet and center the ship.
-            self._create_fleet()
-            self.ship.center_ship()
+            # self._create_fleet()
+            # self.ship.center_ship()
 
             # Pause
             sleep(0.5)
         else:
             self.game_active = False
             pygame.mouse.set_visible(True)
+
+    def _empty_bullet_create_fleet(self):
+        self.bullets.empty()
+        self.aliens.empty()
+        self._create_fleet()
+        self.ship.center_ship()
 
     def _update_aliens(self):
         """Update the positions of all aliens in the fleet."""
@@ -204,8 +226,8 @@ class AlienInvasion:
         alien = Alien(self)
         alien_width, alien_height = alien.rect.size
 
-        # current_x, current_y = alien_width, alien_height + 80
-        current_x, current_y = alien_width, alien_height
+        # current_x, current_y = alien_width, alien_height
+        current_x, current_y = alien_width, alien_height + 80
         while current_y < (self.settings.screen_height - 3 * alien_height):
             while current_x < (self.settings.screen_width - 2 * alien_width):
                 self._create_alien(current_x, current_y)
@@ -213,7 +235,7 @@ class AlienInvasion:
 
             # Finished a row; reset x value, and increment y value.
             current_x = alien_width
-            current_y += 2 * alien_height
+            current_y += 1.5 * alien_height
 
     def _create_alien(self, x_position, y_position):
         """Create an alien and place it in the row."""

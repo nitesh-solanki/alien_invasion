@@ -3,6 +3,13 @@ class Settings:
 
     def __init__(self):
         """Initiate the game's static settings."""
+        # Music settings
+        self.initial_music_file_path = "./audio/welcome_bg.mp3"
+        self.game_music_file_path = "./audio/Thor Ragnarok.mp3"
+        # self.bullet_music_file_path = "./audio/Gun sound AETrim.mp3"
+        self.bullet_music_file_path = "./audio/blaster.mp3"
+        self.alien_blast_music_file_path = "./audio/alien_blast.mp3"
+
         # Screen settings
         self.screen_width = 1200
         self.screen_height = 800
@@ -18,7 +25,7 @@ class Settings:
         self.bullet_allowed = 3
 
         # Alien settings
-        self.fleet_drop_speed = 100
+        self.fleet_drop_speed = 10
 
         # How quickly the game speeds up
         self.speedup_scale = 1.1
