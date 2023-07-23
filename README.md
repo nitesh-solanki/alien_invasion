@@ -1,5 +1,5 @@
 # alien_invasion
-In the Alien Invasion project, we used the Pygame package and Python programming environment to develop a 2D game. The goal of the game is to shoot down a fleet of aliens as they drop down the screen, in levels that increase in speed and difficulty. In this project, there will be a 2D game with a rocket ship that moves right and left and fires bullets in response to player input. A fleet of aliens to destroy, with advance sideways and down, and then get rid of any aliens hit by a bullet, with a limited number of ships a player has and end the game when the player runs out of ships. All of these will start after hitting a Play button.
+In the Alien Invasion project, we used the Pygame package and Python programming environment to develop a 2D game. The goal of the game is to shoot down a fleet of aliens as they drop down the screen, in levels that increase in speed and difficulty. In this project, there will be a 2D game with a rocket ship that moves right and left and fires bullets in response to player input. A fleet of aliens to destroy, with advance sideways and down, and then get rid of any aliens hit by a bullet, with a limited number of ships a player has and end the game when the player runs out of ships. All of these will start just after hitting a Play button.
 
 Instruction - 
 - Use keyboard keys. 
